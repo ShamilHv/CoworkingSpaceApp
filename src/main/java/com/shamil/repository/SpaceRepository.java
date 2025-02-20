@@ -13,14 +13,15 @@ public class SpaceRepository {
         return space;
     }
 
-    public Space getSpaceById(String spaceId) {
+    public Space getSpaceByName(String spaceName) {
         return spaces.stream().filter(s -> s.getSpaceName().
-                        equals(spaceId)).findFirst().
+                        equals(spaceName)).findFirst().
                         orElse(null);
     }
     public List<Space> getAllSpaces() {
         return spaces;
     }
+
     public List<Space> getAvailableSpaces() {
         return spaces.stream()
                 .filter(Space::isAvailable)

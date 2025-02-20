@@ -41,7 +41,7 @@ public class MainMenu {
                 System.out.println("Select an option between 0 and 2");
                 try {
                     choice = sc.nextInt();
-                    sc.nextLine(); // Add this line to consume newline
+                    sc.nextLine();
                     if (choice >= 0 && choice <= 2) {
                         break;
                     } else {
@@ -49,7 +49,7 @@ public class MainMenu {
                     }
                 } catch (Exception e) {
                     System.out.println("Please enter a number");
-                    sc.nextLine(); // Already correct here
+                    sc.nextLine();
                 }
             }
 

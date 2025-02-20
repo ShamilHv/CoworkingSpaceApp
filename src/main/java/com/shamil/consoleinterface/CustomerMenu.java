@@ -99,11 +99,11 @@ public class CustomerMenu {
         }
 
         System.out.println("Enter Space Name:");
-        String spaceId = sc.nextLine();
+        String spaceName = sc.nextLine();
 
-        Space selectedSpace = spaceService.getSpaceById(spaceId);
+        Space selectedSpace = spaceService.getSpaceByName(spaceName);
         if (selectedSpace == null || !selectedSpace.isAvailable()) {
-            System.out.println("Invalid space ID or space is no longer available");
+            System.out.println("Invalid space NAME or space is no longer available");
             return;
         }
 
@@ -124,7 +124,7 @@ public class CustomerMenu {
         }
 
         Reservation reservation = reservationService.makeReservation(
-                customer, spaceId, startDateTime, endDateTime);
+                customer, spaceName, startDateTime, endDateTime);
 
         if (reservation != null) {
             System.out.println("Reservation created successfully!");

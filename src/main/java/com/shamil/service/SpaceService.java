@@ -36,8 +36,8 @@ public class SpaceService {
         return spaceRepository.getAvailableSpaces();
     }
 
-    public Space getSpaceById(String id) {
-        return spaceRepository.getSpaceById(id);
+    public Space getSpaceByName(String spaceName) {
+        return spaceRepository.getSpaceByName(spaceName);
     }
 
     public Space updateSpace(Space space) {

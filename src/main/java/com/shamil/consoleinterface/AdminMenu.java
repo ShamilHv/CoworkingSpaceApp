@@ -70,7 +70,6 @@ public class AdminMenu {
         System.out.println("ADD NEW COWORKING SPACE");
 
         System.out.println("NAME OF SPACE");
-        sc.nextLine();
         String name = sc.nextLine();
 
         System.out.println("Space Types:");

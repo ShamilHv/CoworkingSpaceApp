@@ -1,6 +1,5 @@
 package com.shamil;
 
-
 import com.shamil.consoleinterface.MainMenu;
 import com.shamil.repository.ReservationRepository;
 import com.shamil.repository.SpaceRepository;

@@ -16,6 +16,7 @@ public class ReservationRepository {
     public List<Reservation> getReservations() {
         return reservations;
     }
+
     public Reservation getReservationById(String reservationId) {
         return reservations.stream().filter(r->r.getReservationId().
                 equals(reservationId)).findFirst().orElse(null);

@@ -21,7 +21,7 @@ public class ReservationService {
 
     public Reservation makeReservation(Customer customer, String spaceId,
                                        LocalDateTime startTime, LocalDateTime endTime) {
-        Space space = spaceService.getSpaceById(spaceId);
+        Space space = spaceService.getSpaceByName(spaceId);
         if (space == null || !space.isAvailable()) {
             return null;
         }
