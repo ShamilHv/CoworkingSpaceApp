@@ -1,0 +1,17 @@
+package com.shamil.model;
+
+public class Admin extends User {
+
+    public Admin(){
+        super();
+    }
+
+    public Admin(String id, String username, String password){
+        super(id, username, password);
+    }
+
+    @Override
+    public String getRole() {
+        return "ADMIN";
+    }
+}
