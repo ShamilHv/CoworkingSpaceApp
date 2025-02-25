@@ -2,16 +2,13 @@ package com.shamil.model;
 
 public class Admin extends User {
 
-    public Admin(){
+    public Admin() {
         super();
+        setRole(new AdminRole());
     }
 
-    public Admin(String id, String username, String password){
-        super(id, username, password);
+    public Admin(String id, String username, String password) {
+        super(id, username, password, new AdminRole());
     }
 
-    @Override
-    public String getRole() {
-        return "ADMIN";
-    }
 }

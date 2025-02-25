@@ -7,23 +7,16 @@ public class Space {
     private String spaceName;
     private SpaceType spaceType;
     private double pricePerHour;
-    private boolean available;
+
 
     public Space(String spaceId, String spaceName, SpaceType spaceType, double pricePerHour) {
         this.spaceId = spaceId;
         this.spaceName = spaceName;
         this.spaceType = spaceType;
         this.pricePerHour = pricePerHour;
-        this.available = true;
     }
 
-    public void setAvailable(boolean available) {
-        this.available = available;
-    }
 
-    public boolean isAvailable() {
-        return this.available;
-    }
 
     public String getSpaceId() {
         return spaceId;
@@ -60,7 +53,6 @@ public class Space {
                 ", spaceName='" + spaceName + '\'' +
                 ", spaceType=" + spaceType +
                 ", pricePerHour=" + pricePerHour +
-                ", available=" + available +
                 '}';
     }
 }

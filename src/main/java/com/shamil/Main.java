@@ -8,6 +8,8 @@ import com.shamil.service.ReservationService;
 import com.shamil.service.SpaceService;
 import com.shamil.service.UserService;
 
+import java.util.Scanner;
+
 public class Main {
     public static void main(String[] args) {
         UserRepository userRepository = new UserRepository();
@@ -18,7 +20,7 @@ public class Main {
         SpaceService spaceService = new SpaceService(spaceRepository);
         ReservationService reservationService = new ReservationService(reservationRepository, spaceService);
 
-        MainMenu mainMenu = new MainMenu(userService, spaceService, reservationService);
+        MainMenu mainMenu = new MainMenu(userService, spaceService, reservationService, new Scanner(System.in));
         mainMenu.display();
 }
 }

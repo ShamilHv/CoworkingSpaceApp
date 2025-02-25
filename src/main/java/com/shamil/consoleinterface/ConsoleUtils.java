@@ -8,7 +8,6 @@ import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 
 public class ConsoleUtils {
-    private Scanner sc = new Scanner(System.in);
     public static LocalDate getDate(String date, Scanner sc) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         while (true) {

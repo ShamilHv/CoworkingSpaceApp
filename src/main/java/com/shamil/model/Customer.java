@@ -8,15 +8,13 @@ public class Customer extends User{
     List<Reservation> reservations=new ArrayList<>();
 
     public Customer(String id,String username, String password) {
-        super(id, username, password);
+        super(id, username, password, new CustomerRole());
     }
     public Customer(){
         super();
+        setRole(new CustomerRole());
     }
-    @Override
-    public String getRole() {
-        return "CUSTOMER";
-    }
+
     public void addReservation(Reservation reservation) {
         reservations.add(reservation);
     }

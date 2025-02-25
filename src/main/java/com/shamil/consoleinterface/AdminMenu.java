@@ -9,42 +9,30 @@ import com.shamil.service.SpaceService;
 import java.util.List;
 import java.util.Scanner;
 
-public class AdminMenu {
+public class AdminMenu extends AbstractMenu {
     private SpaceService spaceService;
     private ReservationService reservationService;
-    private  Scanner sc = new Scanner(System.in);
+    private Scanner sc = new Scanner(System.in);
 
-
-    public AdminMenu(SpaceService spaceService, ReservationService reservationService) {
+    public AdminMenu(SpaceService spaceService, ReservationService reservationService, Scanner sc) {
+        super(sc);
         this.spaceService = spaceService;
         this.reservationService = reservationService;
     }
+
+    @Override
     public void display() {
         boolean running = true;
         while (running) {
-            System.out.println("ADMIN MENU");
+            displayHeader("ADMIN MENU");
             System.out.println("1. Add a new coworking space");
             System.out.println("2. View all coworking spaces");
             System.out.println("3. Remove a coworking space");
             System.out.println("4. View all reservations");
             System.out.println("0. Logout");
 
-            int choice;
-            while(true){
-                System.out.println("Select an option between 0 and 4");
-                try {
-                    choice = sc.nextInt();
-                    sc.nextLine();
-                    if(choice > 4 || choice < 0){
-                        System.out.println("Invalid option");
-                    } else {
-                        break;
-                    }
-                } catch (Exception e) {
-                    System.out.println("Please enter a valid number");
-                    sc.nextLine();
-                }
-            }
+            int choice = getMenuChoice(0, 4);
+
             switch (choice) {
                 case 1:
                     addSpace();
@@ -61,13 +49,12 @@ public class AdminMenu {
                 case 0:
                     running = false;
                     break;
-                default:
-                    System.out.println("Invalid option. Please try again.");
             }
         }
     }
+
     private void addSpace() {
-        System.out.println("ADD NEW COWORKING SPACE");
+        displayHeader("ADD NEW COWORKING SPACE");
 
         System.out.println("NAME OF SPACE");
         String name = sc.nextLine();
@@ -80,6 +67,7 @@ public class AdminMenu {
         System.out.println("Select a coworking space type");
         int typeChoice = sc.nextInt();
         SpaceType type = SpaceType.values()[typeChoice - 1];
+
         System.out.println("Enter hourly price ($)");
         double price = sc.nextDouble();
         sc.nextLine();
@@ -92,8 +80,9 @@ public class AdminMenu {
             System.out.println("Failed to add new space");
         }
     }
+
     private void viewAllSpaces() {
-        System.out.println("ALL COWORKING SPACES");
+        displayHeader("ALL COWORKING SPACES");
 
         List<Space> spaces = spaceService.getAllSpaces();
 
@@ -106,8 +95,9 @@ public class AdminMenu {
             System.out.println(space);
         }
     }
+
     private void removeSpace() {
-        System.out.println("REMOVE COWORKING SPACE");
+        displayHeader("REMOVE COWORKING SPACE");
 
         List<Space> spaces = spaceService.getAllSpaces();
 
@@ -130,11 +120,11 @@ public class AdminMenu {
             System.out.println("Space removed successfully");
         } else {
             System.out.println("Failed to remove space. ID might be invalid.");
-
         }
     }
+
     private void viewAllReservations() {
-        System.out.println("ALL RESERVATIONS");
+        displayHeader("ALL RESERVATIONS");
 
         List<Reservation> reservations = reservationService.getAllReservations();
 
@@ -147,7 +137,4 @@ public class AdminMenu {
             System.out.println(reservation);
         }
     }
-
 }
-
-

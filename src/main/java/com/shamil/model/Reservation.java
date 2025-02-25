@@ -13,23 +13,17 @@ public class Reservation {
     private ReservationStatus reservationStatus;
     private double totalPrice;
 
-    public Reservation(String reservationId, Space space, Customer customer, LocalDateTime startTime, LocalDateTime endTime) {
+    public Reservation(String reservationId, Space space, Customer customer, LocalDateTime startTime, LocalDateTime endTime, double totalPrice) {
         this.reservationId = reservationId;
         this.space = space;
         this.customer = customer;
         this.startTime = startTime;
         this.endTime = endTime;
         this.reservationStatus = ReservationStatus.CONFIRMED;
-
-        //Calculating price based on the time reserved and hourly price
-        long hours = java.time.Duration.between(startTime, endTime).toHours();
-        this.totalPrice = hours * space.getPricePerHour();
+        this.totalPrice = totalPrice;
     }
 
-    public void cancelReservation() {
-        this.reservationStatus = ReservationStatus.CANCELLED;
-        this.space.setAvailable(true);
-    }
+
 
     @Override
     public String toString() {

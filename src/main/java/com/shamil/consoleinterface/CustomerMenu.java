@@ -10,42 +10,40 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Scanner;
 
-public class CustomerMenu {
+public class CustomerMenu extends AbstractMenu {
+    private Scanner sc = new Scanner(System.in);
     private SpaceService spaceService;
     private ReservationService reservationService;
-    private Scanner sc = new Scanner(System.in);
 
-
-    public CustomerMenu(SpaceService spaceService, ReservationService reservationService) {
+    public CustomerMenu(SpaceService spaceService, ReservationService reservationService, Scanner sc) {
+        super(sc);
         this.spaceService = spaceService;
         this.reservationService = reservationService;
     }
+
+    @Override
+    public void display() {
+        System.out.println("Error: Customer information is required. Please log in first.");
+    }
+
     public void display(Customer customer) {
+        if (customer == null) {
+            System.out.println("Error: Customer information is missing.");
+            return;
+        }
+
+        System.out.println("Welcome, " + customer.getUsername() + "!");
+
         boolean running = true;
         while (running) {
-            System.out.println(("CUSTOMER MENU"));
+            displayHeader("CUSTOMER MENU");
             System.out.println("1. Browse available spaces");
             System.out.println("2. Make a reservation");
             System.out.println("3. View my reservations");
             System.out.println("4. Cancel a reservation");
             System.out.println("0. Logout");
 
-            int choice;
-            while(true){
-                System.out.println("Select an option between 0 and 4");
-                try {
-                    choice = sc.nextInt();
-                    sc.nextLine();
-                    if(choice > 4 || choice < 0){
-                        System.out.println("Invalid option");
-                    } else {
-                        break;
-                    }
-                } catch (Exception e) {
-                    System.out.println("Please enter a valid number");
-                    sc.nextLine();
-                }
-            }
+            int choice = getMenuChoice(0, 4);
 
             switch (choice) {
                 case 1:
@@ -63,13 +61,11 @@ public class CustomerMenu {
                 case 0:
                     running = false;
                     break;
-                default:
-                    System.out.println("Invalid option. Please try again.");
             }
         }
     }
     private void browseAvailableSpaces() {
-        System.out.println(("AVAILABLE SPACES"));
+        displayHeader("AVAILABLE SPACES");
 
         List<Space> spaces = spaceService.getAvailableSpaces();
 
@@ -84,7 +80,7 @@ public class CustomerMenu {
     }
 
     private void makeReservation(Customer customer) {
-        System.out.println("MAKE A RESERVATION");
+        displayHeader("MAKE A RESERVATION");
 
         List<Space> spaces = spaceService.getAvailableSpaces();
 
@@ -102,7 +98,7 @@ public class CustomerMenu {
         String spaceName = sc.nextLine();
 
         Space selectedSpace = spaceService.getSpaceByName(spaceName);
-        if (selectedSpace == null || !selectedSpace.isAvailable()) {
+        if (selectedSpace == null) {
             System.out.println("Invalid space NAME or space is no longer available");
             return;
         }
@@ -135,7 +131,7 @@ public class CustomerMenu {
     }
 
     private void viewMyReservations(String customerId) {
-        System.out.println("MY RESERVATIONS");
+        displayHeader("MY RESERVATIONS");
 
         List<Reservation> reservations = reservationService.getCustomerReservations(customerId);
 
@@ -148,8 +144,9 @@ public class CustomerMenu {
             System.out.println(reservation);
         }
     }
+
     private void cancelReservation(Customer customer) {
-        System.out.println("CANCEL RESERVATION");
+        displayHeader("CANCEL RESERVATION");
 
         List<Reservation> reservations = reservationService.getCustomerReservations(customer.getId());
 
@@ -166,13 +163,12 @@ public class CustomerMenu {
         System.out.println("Enter reservation ID to cancel");
         String reservationId = sc.nextLine();
 
-            boolean cancelled = reservationService.cancelReservation(reservationId, customer);
+        boolean cancelled = reservationService.cancelReservation(reservationId, customer);
 
-            if (cancelled) {
-                System.out.println("Reservation cancelled successfully");
-            } else {
-                System.out.println("Failed to cancel reservation. ID might be invalid or already cancelled.");
-            }
+        if (cancelled) {
+            System.out.println("Reservation cancelled successfully");
+        } else {
+            System.out.println("Failed to cancel reservation. ID might be invalid or already cancelled.");
         }
     }
-
+}
