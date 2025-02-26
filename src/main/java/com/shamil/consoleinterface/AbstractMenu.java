@@ -13,7 +13,6 @@ public abstract class AbstractMenu {
 
     public abstract void display();
 
-
     protected int getMenuChoice(int min, int max) {
         int choice;
         while (true) {

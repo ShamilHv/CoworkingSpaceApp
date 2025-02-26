@@ -1,6 +1,9 @@
 package com.shamil.model;
 
-public class Admin extends User {
+import java.io.Serializable;
+
+public class Admin extends User implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     public Admin() {
         super();

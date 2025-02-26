@@ -1,9 +1,12 @@
 package com.shamil.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Customer extends User{
+public class Customer extends User implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     List<Reservation> reservations=new ArrayList<>();
 

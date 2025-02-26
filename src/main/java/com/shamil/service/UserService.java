@@ -1,5 +1,7 @@
 package com.shamil.service;
 
+import com.shamil.exception.AuthenticationException;
+import com.shamil.exception.UserAlreadyExistsException;
 import com.shamil.model.Admin;
 import com.shamil.model.Customer;
 import com.shamil.model.User;
@@ -12,9 +14,10 @@ public class UserService {
     private User currentUser;
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
-        ///Initializing some default users for testing
-        initializeDefaultUsers();
-    }
+        ///Initializing some default users for testing. If not already exists
+        if (userRepository.getAllUsers().isEmpty()) {
+            initializeDefaultUsers();
+        }    }
     private void initializeDefaultUsers() {
         Admin admin = new Admin();
         admin.setId(UUID.randomUUID().toString());
@@ -29,13 +32,14 @@ public class UserService {
         userRepository.addUser(customer);
     }
 
+
     public User login(String username, String password) {
         User user = userRepository.getUserByUsername(username);
         if (user != null && user.getPassword().equals(password)) {
             currentUser = user;
             return user;
         }
-        return null;
+        throw new AuthenticationException("Invalid username or password");
     }
 
     public void logout() {
@@ -48,7 +52,7 @@ public class UserService {
 
     public Customer registerCustomer(String username, String password) {
         if (userRepository.getUserByUsername(username) != null) {
-            return null;
+            throw new UserAlreadyExistsException("User with username '" + username + "' already exists");
         }
 
         Customer customer = new Customer();

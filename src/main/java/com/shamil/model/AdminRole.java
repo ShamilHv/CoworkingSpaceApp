@@ -1,6 +1,9 @@
 package com.shamil.model;
 
-public class AdminRole implements Role{
+import java.io.Serializable;
+
+public class AdminRole implements Role, Serializable {
+    private static final long serialVersionUID = 1L;
     @Override
     public String getRoleName() {
         return "ADMIN";
