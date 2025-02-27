@@ -52,8 +52,8 @@ public class SpaceService {
         return updatedSpace;
     }
 
-    public boolean removeSpace(String spaceName) {
-        boolean removed = spaceRepository.removeSpaceById(spaceName);
+    public boolean removeSpaceByName(String spaceName) {
+        boolean removed = spaceRepository.removeSpaceByName(spaceName);
         if (!removed) {
             throw new ResourceNotFoundException("Space with name '" + spaceName + "' not found");
         }

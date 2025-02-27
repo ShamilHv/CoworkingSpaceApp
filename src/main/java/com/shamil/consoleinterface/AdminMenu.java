@@ -112,9 +112,9 @@ public class AdminMenu extends AbstractMenu {
         }
 
         System.out.println("Enter space name to remove");
-        String spaceId = sc.nextLine();
+        String spaceName = sc.nextLine();
 
-        boolean removed = spaceService.removeSpace(spaceId);
+        boolean removed = spaceService.removeSpaceByName(spaceName);
 
         if (removed) {
             System.out.println("Space removed successfully");

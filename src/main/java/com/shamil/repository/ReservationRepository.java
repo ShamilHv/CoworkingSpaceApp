@@ -1,6 +1,5 @@
 package com.shamil.repository;
 
-import com.shamil.model.Customer;
 import com.shamil.model.Reservation;
 
 import java.util.ArrayList;

@@ -11,9 +11,13 @@ public class UserRepository {
 
     private List<User> users = new ArrayList<>();
 
-    public User addUser(User user){
+    public User addUser(User user) {
         users.add(user);
         return user;
+    }
+
+    public void addAll(List<User> users) {
+        this.users = users;
     }
 
     public User getUserById(String id) {
@@ -23,18 +27,18 @@ public class UserRepository {
                 .orElse(null);
     }
 
-    public User getUserByUsername(String username){
+    public User getUserByUsername(String username) {
         return users.stream()
                 .filter(user -> user.getUsername().equals(username))
                 .findFirst()
                 .orElse(null);
     }
 
-    public List<User> getAllUsers(){
+    public List<User> getAllUsers() {
         return users;
     }
 
-    public List<Customer> getAllCustomers(){
+    public List<Customer> getAllCustomers() {
         List<Customer> customers = new ArrayList<>();
         for (User user : users) {
             if (user instanceof Customer) {
@@ -54,4 +58,4 @@ public class UserRepository {
         return admins;
     }
 
-    }
+}
