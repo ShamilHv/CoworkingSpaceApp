@@ -1,6 +1,7 @@
 package com.shamil;
 
 import com.shamil.consoleinterface.MainMenu;
+import com.shamil.io.FileStorageManager;
 import com.shamil.repository.ReservationRepository;
 import com.shamil.repository.SpaceRepository;
 import com.shamil.repository.UserRepository;
@@ -16,11 +17,20 @@ public class Main {
         SpaceRepository spaceRepository = new SpaceRepository();
         ReservationRepository reservationRepository = new ReservationRepository();
 
+        FileStorageManager fileStorageManager = new FileStorageManager();
+
+        fileStorageManager.loadApplicationState(userRepository, spaceRepository, reservationRepository);
+
         UserService userService = new UserService(userRepository);
         SpaceService spaceService = new SpaceService(spaceRepository);
         ReservationService reservationService = new ReservationService(reservationRepository, spaceService);
 
         MainMenu mainMenu = new MainMenu(userService, spaceService, reservationService, new Scanner(System.in));
-        mainMenu.display();
-}
+
+        try {
+            mainMenu.display();
+        } finally {
+            fileStorageManager.saveApplicationState(userRepository, spaceRepository, reservationRepository);
+        }
+    }
 }

@@ -12,14 +12,16 @@ public class SpaceRepository {
 
 
     public SpaceRepository() {
-        initializeSampleSpaces();
+       initializeSampleSpaces();
     }
-    private void initializeSampleSpaces() {
-        addSpace(new Space(UUID.randomUUID().toString(), "Open Space A", SpaceType.OPEN_SPACE, 10.0));
-        addSpace(new Space(UUID.randomUUID().toString(), "Private Office 1", SpaceType.OFFICE, 35.0));
-        addSpace(new Space(UUID.randomUUID().toString(), "Meeting Room Large", SpaceType.MEETING_ROOM, 45.0));
-        addSpace(new Space(UUID.randomUUID().toString(), "Desk 101", SpaceType.PRIVATE_DESK, 15.0));
-        addSpace(new Space(UUID.randomUUID().toString(), "Open Space B", SpaceType.OPEN_SPACE, 12.0));
+    public void initializeSampleSpaces() {
+        if (spaces.isEmpty()) {
+            addSpace(new Space(UUID.randomUUID().toString(), "Open Space A", SpaceType.OPEN_SPACE, 10.0));
+            addSpace(new Space(UUID.randomUUID().toString(), "Private Office 1", SpaceType.OFFICE, 35.0));
+            addSpace(new Space(UUID.randomUUID().toString(), "Meeting Room Large", SpaceType.MEETING_ROOM, 45.0));
+            addSpace(new Space(UUID.randomUUID().toString(), "Desk 101", SpaceType.PRIVATE_DESK, 15.0));
+            addSpace(new Space(UUID.randomUUID().toString(), "Open Space B", SpaceType.OPEN_SPACE, 12.0));
+        }
     }
 
 

@@ -1,6 +1,9 @@
 package com.shamil.service;
 
 import com.shamil.enums.ReservationStatus;
+import com.shamil.exception.InvalidReservationException;
+import com.shamil.exception.ResourceNotFoundException;
+import com.shamil.exception.TimeConflictException;
 import com.shamil.model.Customer;
 import com.shamil.model.Reservation;
 import com.shamil.model.Space;
@@ -22,19 +25,32 @@ public class ReservationService {
 
     private double calculateTotalPrice(Space space, LocalDateTime startTime, LocalDateTime endTime) {
         long hours = Duration.between(startTime, endTime).toHours();
+        if (hours <= 0) {
+            throw new InvalidReservationException("Reservation must be for at least 1 hour");
+        }
         return hours * space.getPricePerHour();
     }
 
+
     public Reservation makeReservation(Customer customer, String spaceId,
                                        LocalDateTime startTime, LocalDateTime endTime) {
-        Space space = spaceService.getSpaceByName(spaceId);
-        if (space == null) {
-            return null;
+        if (customer == null) {
+            throw new IllegalArgumentException("Customer cannot be null");
+        }
+        if (startTime == null || endTime == null) {
+            throw new IllegalArgumentException("Start and end times cannot be null");
+        }
+        if (startTime.isAfter(endTime) || startTime.isEqual(endTime)) {
+            throw new InvalidReservationException("End time must be after start time");
+        }
+        if (startTime.isBefore(LocalDateTime.now())) {
+            throw new InvalidReservationException("Start time must be in the future");
         }
 
+        Space space = spaceService.getSpaceByName(spaceId);
+
         if (hasTimeConflict(space, startTime, endTime)) {
-            System.out.println("Time-conflict, please choose a different time interval");
-            return null;
+            throw new TimeConflictException("Time conflict with existing reservation");
         }
 
         double totalPrice = calculateTotalPrice(space, startTime, endTime);
@@ -43,12 +59,10 @@ public class ReservationService {
         Reservation reservation = new Reservation(id, space, customer, startTime, endTime, totalPrice);
 
         reservationRepository.addReservation(reservation);
-
         customer.addReservation(reservation);
 
         return reservation;
     }
-
     private boolean hasTimeConflict(Space space, LocalDateTime startTime, LocalDateTime endTime) {
         List<Reservation> allReservations = reservationRepository.getReservations();
 
@@ -63,17 +77,22 @@ public class ReservationService {
     public boolean cancelReservation(String reservationId, Customer customer) {
         Reservation reservation = reservationRepository.getReservationById(reservationId);
 
-        if (reservation != null &&
-                reservation.getCustomer().getId().equals(customer.getId()) &&
-                reservation.getStatus() == ReservationStatus.CONFIRMED) {
-
-            reservation.setReservationStatus(ReservationStatus.CANCELLED);
-            return true;
+        if (reservation == null) {
+            throw new ResourceNotFoundException("Reservation with ID '" + reservationId + "' not found");
         }
 
-        return false;
+        if (!reservation.getCustomer().getId().equals(customer.getId())) {
+            throw new InvalidReservationException("You can only cancel your own reservations");
+        }
 
+        if (reservation.getStatus() != ReservationStatus.CONFIRMED) {
+            throw new InvalidReservationException("Only confirmed reservations can be cancelled");
+        }
+
+        reservation.setReservationStatus(ReservationStatus.CANCELLED);
+        return true;
     }
+
     public List<Reservation> getAllReservations() {
         return reservationRepository.getReservations();
     }
@@ -81,7 +100,12 @@ public class ReservationService {
         return reservationRepository.getReservationsByCustomerId(customerId);
     }
     public Reservation getReservationById(String reservationId) {
-        return reservationRepository.getReservationById(reservationId);
+        Reservation reservation = reservationRepository.getReservationById(reservationId);
+        if (reservation == null) {
+            throw new ResourceNotFoundException("Reservation with ID '" + reservationId + "' not found");
+        }
+        return reservation;
     }
+
 
 }

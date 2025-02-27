@@ -32,7 +32,6 @@ public class CustomerMenu extends AbstractMenu {
             return;
         }
 
-        System.out.println("Welcome, " + customer.getUsername() + "!");
 
         boolean running = true;
         while (running) {

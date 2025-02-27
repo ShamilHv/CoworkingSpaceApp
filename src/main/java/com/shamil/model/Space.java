@@ -2,7 +2,10 @@ package com.shamil.model;
 
 import com.shamil.enums.SpaceType;
 
-public class Space {
+import java.io.Serializable;
+
+public class Space implements Serializable {
+    private static final long serialVersionUID = 1L;
     private String spaceId;
     private String spaceName;
     private SpaceType spaceType;

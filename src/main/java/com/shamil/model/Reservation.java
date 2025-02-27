@@ -2,9 +2,11 @@ package com.shamil.model;
 
 import com.shamil.enums.ReservationStatus;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class Reservation {
+public class Reservation implements Serializable {
+    private static final long serialVersionUID = 1L;
     private String reservationId;
     private Space space;
     private Customer customer;

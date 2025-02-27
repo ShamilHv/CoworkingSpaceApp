@@ -1,6 +1,7 @@
 package com.shamil.service;
 
 import com.shamil.enums.SpaceType;
+import com.shamil.exception.ResourceNotFoundException;
 import com.shamil.model.Space;
 import com.shamil.repository.SpaceRepository;
 
@@ -15,6 +16,13 @@ public class SpaceService {
     }
 
     public Space addSpace(String name, SpaceType type, double pricePerHour) {
+        if (name == null || name.trim().isEmpty()) {
+            throw new IllegalArgumentException("Space name cannot be empty");
+        }
+        if (pricePerHour <= 0) {
+            throw new IllegalArgumentException("Price must be greater than zero");
+        }
+
         String id = UUID.randomUUID().toString();
         Space space = new Space(id, name, type, pricePerHour);
         return spaceRepository.addSpace(space);
@@ -29,15 +37,27 @@ public class SpaceService {
     }
 
     public Space getSpaceByName(String spaceName) {
-        return spaceRepository.getSpaceByName(spaceName);
+        Space space = spaceRepository.getSpaceByName(spaceName);
+        if (space == null) {
+            throw new ResourceNotFoundException("Space with name '" + spaceName + "' not found");
+        }
+        return space;
     }
 
     public Space updateSpace(Space space) {
-        return spaceRepository.updateSpace(space);
+        Space updatedSpace = spaceRepository.updateSpace(space);
+        if (updatedSpace == null) {
+            throw new ResourceNotFoundException("Space with ID '" + space.getSpaceId() + "' not found");
+        }
+        return updatedSpace;
     }
 
-    public boolean removeSpace(String spaceId) {
-        return spaceRepository.removeSpaceById(spaceId);
+    public boolean removeSpace(String spaceName) {
+        boolean removed = spaceRepository.removeSpaceById(spaceName);
+        if (!removed) {
+            throw new ResourceNotFoundException("Space with name '" + spaceName + "' not found");
+        }
+        return true;
     }
 
 }
