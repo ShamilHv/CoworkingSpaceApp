@@ -34,18 +34,13 @@ public class FileStorageManager {
                                      ReservationRepository reservationRepository) {
         List<User> users = loadUsers();
         if (users != null) {
-            for (User user : users) {
-                userRepository.addUser(user);
-            }
+            userRepository.addAll(users);
         }
 
         List<Space> spaces = loadSpaces();
         if (spaces != null) {
             spaceRepository.getAllSpaces().clear();
-
-            for (Space space : spaces) {
-                spaceRepository.addSpace(space);
-            }
+            spaceRepository.addAll(spaces);
         }
 
         List<Reservation> reservations = loadReservations();

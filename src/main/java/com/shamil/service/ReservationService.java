@@ -32,7 +32,7 @@ public class ReservationService {
     }
 
 
-    public Reservation makeReservation(Customer customer, String spaceId,
+    public Reservation makeReservation(Customer customer, String spaceName,
                                        LocalDateTime startTime, LocalDateTime endTime) {
         if (customer == null) {
             throw new IllegalArgumentException("Customer cannot be null");
@@ -40,14 +40,14 @@ public class ReservationService {
         if (startTime == null || endTime == null) {
             throw new IllegalArgumentException("Start and end times cannot be null");
         }
-        if (startTime.isAfter(endTime) || startTime.isEqual(endTime)) {
+        if (!startTime.isBefore(endTime)) {
             throw new InvalidReservationException("End time must be after start time");
         }
         if (startTime.isBefore(LocalDateTime.now())) {
             throw new InvalidReservationException("Start time must be in the future");
         }
 
-        Space space = spaceService.getSpaceByName(spaceId);
+        Space space = spaceService.getSpaceByName(spaceName);
 
         if (hasTimeConflict(space, startTime, endTime)) {
             throw new TimeConflictException("Time conflict with existing reservation");
